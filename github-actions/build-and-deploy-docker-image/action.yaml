@@ -92,5 +92,6 @@ runs:
         cache-to: type=gha,mode=max
     - name: Set success
       if: steps.check-for-changes.outputs.is_changed == false
+      shell: bash
       run: |
         echo "is_changed=false"

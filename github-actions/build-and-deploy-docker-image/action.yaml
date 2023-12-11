@@ -48,6 +48,7 @@ runs:
         fetch-depth: 0
     - name: Check for changes
       id: check-for-changes
+      shell: bash
       run: |
         changed_files=$(git diff --name-only ${{ inputs.github_ref_before }} ${{ inputs.github_ref_after }} | grep "^${{ inputs.directory }}" | wc  -l)"
         is_changed=true

@@ -58,35 +58,39 @@ runs:
         echo "is_changed=$is_changed" >> $GITHUB_OUTPUT
       working-directory: dockerfile-repo
     - name: Extract metadata
-      if: steps.check-for-changes.outputs.is_changed == 'true'
+      if: steps.check-for-changes.outputs.is_changed == true
       id: meta
       uses: docker/metadata-action@v3
       with:
         images: ${{ inputs.docker_registry }}/${{ inputs.image_name }}
     - name: Set up QEMU
-      if: steps.check-for-changes.outputs.is_changed == 'true'
+      if: steps.check-for-changes.outputs.is_changed == true
       uses: docker/setup-qemu-action@v1
       with:
         image: tonistiigi/binfmt:latest
         platforms: all
     - name: Set up Docker Buildx
-      if: steps.check-for-changes.outputs.is_changed == 'true'
+      if: steps.check-for-changes.outputs.is_changed == true
       uses: docker/setup-buildx-action@v2
     - name: Login to DockerHub
-      if: steps.check-for-changes.outputs.is_changed == 'true'
+      if: steps.check-for-changes.outputs.is_changed == true
       uses: docker/login-action@v2
       with:
         registry: ${{ inputs.docker_registry }}
         username: ${{ inputs.github_user }}
         password: ${{ inputs.github_token }}
     - name: Build and push
-      if: steps.check-for-changes.outputs.is_changed == 'true'
+      if: steps.check-for-changes.outputs.is_changed == true
       uses: docker/build-push-action@v3
       with:
-        context: ${{ inputs.directory }}
+        context: dockerfile-repo/${{ inputs.directory }}
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64,linux/arm64,linux/arm/v7
         cache-from: type=gha
         cache-to: type=gha,mode=max
+    - name: Set success
+      if: steps.check-for-changes.outputs.is_changed == false
+      run: |
+        echo "is_changed=false"

@@ -25,32 +25,24 @@ runs:
         RELEASE_JSON_PATH: release.json
       id: download-release-info
       run: |
-        echo "::group::Download release info"
-        curl -L -s \
+        curl -L \
         -H "Accept: application/vnd.github+json" \
         -H "X-GitHub-Api-Version: 2022-11-28" \
         -o ${RELEASE_JSON_PATH} \
         https://api.github.com/repos/${{ inputs.owner }}/${{ inputs.repo }}/releases/tags/${{ inputs.release-tag }}
-        echo "::endgroup::"
-        echo "::debug::$(cat ${RELEASE_JSON_PATH})"
         echo "release-id=$(cat ${RELEASE_JSON_PATH} | jq -r '.id')" >> $GITHUB_OUTPUT
-        echo "::debug::release-id=$(cat ${RELEASE_JSON_PATH} | jq -r '.id')"
       shell: bash
     - name: Download assets list
       env:
         ASSETS_JSON_PATH: assets.json
       id: download-assets-list
       run: |
-        echo "::group::Download assets list"
-        curl -L -s \
+        curl -L \
         -H "Accept: application/vnd.github+json" \
         -H "X-GitHub-Api-Version: 2022-11-28" \
         -o ${ASSETS_JSON_PATH} \
         https://api.github.com/repos/${{ inputs.owner }}/${{ inputs.repo }}/releases/${{ steps.download-release-info.outputs.release-id }}/assets
-        echo "::endgroup::"
-        echo "::debug::assets-json-path=${ASSETS_JSON_PATH}"
         echo "assets-json-path=${ASSETS_JSON_PATH}" >> $GITHUB_OUTPUT
-        echo "::debug::$(cat ${ASSETS_JSON_PATH})"
       shell: bash
     - name: Create download list
       id: create-download-list
@@ -58,5 +50,3 @@ runs:
       run: |
         cat ${{ steps.download-assets-list.outputs.assets-json-path }} | jq -r --arg regex "${{ inputs.regex }}" '.[] | select(.name | test($regex)) | .browser_download_url' > download-list.txt
         echo "download-list-path=download-list.txt" >> $GITHUB_OUTPUT
-        echo "::debug::download-list-path=download-list.txt"
-        echo "::debug::$(cat download-list.txt)"

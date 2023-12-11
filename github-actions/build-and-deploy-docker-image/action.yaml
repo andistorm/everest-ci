@@ -55,27 +55,32 @@ runs:
         if [ $changed_files -eq 0 ]; then
           is_changed=false
         fi
-        echo "is_changed=$is_changed" >> $GITHUB_ENV
+        echo "is_changed=$is_changed" >> $GITHUB_OUTPUT
       working-directory: dockerfile-repo
     - name: Extract metadata
+      if: steps.check-for-changes.outputs.is_changed == 'true'
       id: meta
       uses: docker/metadata-action@v3
       with:
         images: ${{ inputs.docker_registry }}/${{ inputs.image_name }}
     - name: Set up QEMU
+      if: steps.check-for-changes.outputs.is_changed == 'true'
       uses: docker/setup-qemu-action@v1
       with:
         image: tonistiigi/binfmt:latest
         platforms: all
     - name: Set up Docker Buildx
+      if: steps.check-for-changes.outputs.is_changed == 'true'
       uses: docker/setup-buildx-action@v2
     - name: Login to DockerHub
+      if: steps.check-for-changes.outputs.is_changed == 'true'
       uses: docker/login-action@v2
       with:
         registry: ${{ inputs.docker_registry }}
         username: ${{ inputs.github_user }}
         password: ${{ inputs.github_token }}
     - name: Build and push
+      if: steps.check-for-changes.outputs.is_changed == 'true'
       uses: docker/build-push-action@v3
       with:
         context: ${{ inputs.directory }}

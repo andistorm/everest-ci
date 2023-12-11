@@ -50,22 +50,14 @@ runs:
       id: check-for-changes
       shell: bash
       run: |
-        set -x
-        echo "1"
         set +e
         changed_files="$(git diff --name-only ${{ inputs.github_ref_before }} ${{ inputs.github_ref_after }} | grep "^${{ inputs.directory }}" | wc  -l)"
-        echo $?
         set -e
-        echo "2"
         is_changed=true
-        echo "3"
         if [ $changed_files -eq 0 ]; then
-          echo "4"
           is_changed=false
         fi
-        echo "5"
         echo "is_changed=$is_changed" >> $GITHUB_OUTPUT
-        echo "6"
       working-directory: dockerfile-repo
     - name: Extract metadata
       if: steps.check-for-changes.outputs.is_changed == true

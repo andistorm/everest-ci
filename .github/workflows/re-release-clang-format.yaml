@@ -14,17 +14,12 @@ jobs:
   main:
     runs-on: ubuntu-22.04
     steps:
-      # - name: Download clang-format binary
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   working-directory: assets
-      #   run: |
-      #     gh release -R llvm/llvm-project download ${{ inputs.release-tag }} --pattern 'clang+llvm-*'
-      - name: Create fake assets
+      - name: Download clang-format binary
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: assets
         run: |
-          mkdir assets
-          touch assets/test.txt
-          touch assets/test2.txt
+          gh release -R llvm/llvm-project download ${{ inputs.release-tag }} --pattern 'clang+llvm-*'
       - name: Get llvm release url
         id: get-release-info
         run: |

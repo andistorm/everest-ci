@@ -50,7 +50,7 @@ runs:
       id: check-for-changes
       shell: bash
       run: |
-        changed_files=$(git diff --name-only ${{ inputs.github_ref_before }} ${{ inputs.github_ref_after }} | grep "^${{ inputs.directory }}" | wc  -l)"
+        changed_files="$(git diff --name-only ${{ inputs.github_ref_before }} ${{ inputs.github_ref_after }} | grep "^${{ inputs.directory }}" | wc  -l)"
         is_changed=true
         if [ $changed_files -eq 0 ]; then
           is_changed=false

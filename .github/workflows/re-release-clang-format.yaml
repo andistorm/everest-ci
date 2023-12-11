@@ -1,0 +1,22 @@
+name: Re-release clang-format binary
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release'
+        required: true
+      release-title:
+        description: 'Release title'
+        required: true
+
+jobs:
+  main:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: andistorm/everest-ci/github-actions/download-assets@andistorm-clang-format
+        with:
+          owner: llvm
+          repo: llvm-project
+          release-tag: llvmorg-15.0.6
+          # start with clang+llvm-15.0.6
+          regex: '^clang\+llvm-15\.0\.6.*$'

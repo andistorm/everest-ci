@@ -13,10 +13,13 @@ inputs:
   regex:
     description: 'Regex to match assets'
     required: true
+  dest-dir:
+    description: 'Destination directory'
+    required: true
 outputs:
-  random-number:
-    description: "Random number"
-    value: ${{ steps.random-number-generator.outputs.random-number }}
+  out-dir:
+    description: 'Output directory'
+    value: ${{ inputs.dest-dir }}
 runs:
   using: "composite"
   steps:
@@ -47,6 +50,14 @@ runs:
     - name: Create download list
       id: create-download-list
       shell: bash
+      env:
+        DOWNLOAD_LIST_PATH: download-list.txt
       run: |
-        cat ${{ steps.download-assets-list.outputs.assets-json-path }} | jq -r --arg regex "${{ inputs.regex }}" '.[] | select(.name | test($regex)) | .browser_download_url' > download-list.txt
-        echo "download-list-path=download-list.txt" >> $GITHUB_OUTPUT
+        cat ${{ steps.download-assets-list.outputs.assets-json-path }} | jq -r --arg regex "${{ inputs.regex }}" '.[] | select(.name | test($regex)) | .browser_download_url' > ${DOWNLOAD_LIST_PATH}
+        echo "download-list-path=${DOWNLOAD_LIST_PATH}" >> $GITHUB_OUTPUT
+    - name: Download assets
+      id: download-assets
+      shell: bash
+      run: |
+        cat ${{ steps.create-download-list.outputs.download-list-path }} | xargs -n 1 curl -L -O
+      working-directory: ${{ inputs.dest-dir }}

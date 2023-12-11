@@ -2,9 +2,10 @@ name: Re-release clang-format binary
 on:
   workflow_dispatch:
     inputs:
-      version:
+      release-tag:
         description: 'Version to release'
         required: true
+        default: 'llvmorg-15.0.6'
       release-title:
         description: 'Release title'
         required: true
@@ -13,10 +14,23 @@ jobs:
   main:
     runs-on: ubuntu-22.04
     steps:
-      - uses: andistorm/everest-ci/github-actions/download-assets@andistorm-clang-format
-        with:
-          owner: llvm
-          repo: llvm-project
-          release-tag: llvmorg-15.0.6
-          # start with clang+llvm-15.0.6
-          regex: '^clang\+llvm-15\.0\.6.*$'
+      # - name: Download clang-format binary
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   working-directory: assets
+      #   run: |
+      #     gh release -R llvm/llvm-project download ${{ inputs.release-tag }} --pattern 'clang+llvm-*'
+      - name: Create fake assets
+        run: |
+          mkdir assets
+          touch assets/test.txt
+          touch assets/test2.txt
+      - name: Get llvm release url
+        id: get-release-info
+        run: |
+          echo "::set-output name=url::$(gh release -R llvm/llvm-project view ${{ inputs.release-tag }} --json url | jq -r '.url')"
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release -R andistorm/everest-ci create ${{ inputs.release-tag }} assets/* --title "${{ inputs.release-title }}" --notes "See [LLVM release notes](${{ steps.get-release-info.outputs.url }})."

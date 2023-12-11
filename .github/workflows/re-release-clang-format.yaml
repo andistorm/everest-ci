@@ -25,13 +25,13 @@ jobs:
       - name: Extract clang-format binary
         working-directory: assets
         run: |
-          for file in *.tar.xz
-          do
-            name=$(echo $file | sed -e 's/.tar.xz//')
-            tar --extract --file $file $name/bin/clang-format
-            mv $name/bin/clang-format clang-format-$name
-            rm -rf $name
-          done
+          ls *.tar.xz | xargs -I {} -P $(nproc) bash -c '
+              file="{}"
+              name=$(echo $file | sed -e "s/.tar.xz//")
+              tar --extract --file $file $name/bin/clang-format
+              mv $name/bin/clang-format clang-format-$name
+              rm -rf $name
+          '    
       - name: Get llvm release url
         id: get-release-info
         env:
@@ -42,4 +42,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release -R everest/everest-ci create ${{ inputs.release-tag }} assets/* --title "${{ inputs.release-title }}" --notes "See [LLVM release notes](${{ steps.get-release-info.outputs.url }})."
+          # LTODO switch to everest-ci once it supports creating releases
+          gh release -R andistorm/everest-ci create ${{ inputs.release-tag }} assets/* --title "${{ inputs.release-title }}" --notes "See [LLVM release notes](${{ steps.get-release-info.outputs.url }})."

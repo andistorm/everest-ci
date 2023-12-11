@@ -52,7 +52,10 @@ runs:
       run: |
         set -x
         echo "1"
+        set +e
         changed_files="$(git diff --name-only ${{ inputs.github_ref_before }} ${{ inputs.github_ref_after }} | grep "^${{ inputs.directory }}" | wc  -l)"
+        echo $?
+        set -e
         echo "2"
         is_changed=true
         echo "3"

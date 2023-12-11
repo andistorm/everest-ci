@@ -25,7 +25,7 @@ runs:
         RELEASE_JSON_PATH: release.json
       id: download-release-info
       run: |
-        curl -L -s\
+        curl -L -s \
         -H "Accept: application/vnd.github+json" \
         -H "X-GitHub-Api-Version: 2022-11-28" \
         -o ${RELEASE_JSON_PATH} \
@@ -39,7 +39,7 @@ runs:
         ASSETS_JSON_PATH: assets.json
       id: download-assets-list
       run: |
-        curl -L -s\
+        curl -L -s \
         -H "Accept: application/vnd.github+json" \
         -H "X-GitHub-Api-Version: 2022-11-28" \
         -o ${ASSETS_JSON_PATH} \

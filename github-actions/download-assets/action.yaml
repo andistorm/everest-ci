@@ -52,9 +52,9 @@ runs:
       id: create-download-list
       shell: bash
       run: |
-        cat ${{ steps.download-asstets-list.outputs.assets-json-path }} | jq -r --arg regex "${{ inputs.regex }}" '.[] | select(.name | test($regex)) | .browser_download_url' > download-list.txt
+        cat ${{ steps.download-assets-list.outputs.assets-json-path }} | jq -r --arg regex "${{ inputs.regex }}" '.[] | select(.name | test($regex)) | .browser_download_url' > download-list.txt
         cat download-list.txt
-        cat ${{ steps.download-asstets-list.outputs.assets-json-path }} | jq -r --arg regex "${{ inputs.regex }}" '.[] | select(.name | test($regex)) | .browser_download_url'
+        cat ${{ steps.download-assets-list.outputs.assets-json-path }} | jq -r --arg regex "${{ inputs.regex }}" '.[] | select(.name | test($regex)) | .browser_download_url'
         echo "download-list-path=download-list.txt" >> $GITHUB_OUTPUT
         echo "::debug::download-list-path=download-list.txt"
         echo "::debug::$(cat download-list.txt)"

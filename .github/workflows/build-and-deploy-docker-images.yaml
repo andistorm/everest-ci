@@ -31,3 +31,5 @@ jobs:
           docker_registry: ${{ env.CONTAINER_REGISTRY }}
           github_ref_before: ${{ github.event.before }}
           github_ref_after: ${{ github.event.after }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_user: ${{ github.actor }}

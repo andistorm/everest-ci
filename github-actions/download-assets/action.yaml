@@ -47,6 +47,6 @@ runs:
     - id: create-download-list
       shell: bash
       run: |
-        cat ${ASSETS_JSON_PATH} | jq -r '.[] | select(.name | test("${{ inputs.regex }}")) | .browser_download_url' > download-list.txt
+        cat ${ASSETS_JSON_PATH} | jq -r --arg regex "${{ inputs.regex }}" '.[] | select(.name | test($regex)) | .browser_download_url' > download-list.txt
         echo "download-list-path=download-list.txt" >> $GITHUB_OUTPUT
         echo "::debug::$(cat download-list.txt)"

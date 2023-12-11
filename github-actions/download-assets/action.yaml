@@ -20,7 +20,8 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - env:
+    - name: Download release info
+      env:
         RELEASE_JSON_PATH: release.json
       id: download-release-info
       run: |
@@ -33,9 +34,10 @@ runs:
         echo "release-id=$(cat ${RELEASE_JSON_PATH} | jq -r '.id')" >> $GITHUB_OUTPUT
         echo "::debug::release-id=$(cat ${RELEASE_JSON_PATH} | jq -r '.id')"
       shell: bash
-    - env:
+    - name: Download assets list
+      env:
         ASSETS_JSON_PATH: assets.json
-      id: download-assets-info
+      id: download-assets-list
       run: |
         curl -L \
         -H "Accept: application/vnd.github+json" \
@@ -46,9 +48,10 @@ runs:
         echo "assets-json-path=${ASSETS_JSON_PATH}" >> $GITHUB_OUTPUT
         echo "::debug::$(cat ${ASSETS_JSON_PATH})"
       shell: bash
-    - id: create-download-list
+    - name: Create download list
+      id: create-download-list
       shell: bash
       run: |
-        cat ${ASSETS_JSON_PATH} | jq -r --arg regex "${{ inputs.regex }}" '.[] | select(.name | test($regex)) | .browser_download_url' > download-list.txt
+        cat ${{ steps.download-asstets-list.outputs.assets-json-path }} | jq -r --arg regex "${{ inputs.regex }}" '.[] | select(.name | test($regex)) | .browser_download_url' > download-list.txt
         echo "download-list-path=download-list.txt" >> $GITHUB_OUTPUT
         echo "::debug::$(cat download-list.txt)"

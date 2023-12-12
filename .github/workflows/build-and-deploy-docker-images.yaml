@@ -33,4 +33,4 @@ jobs:
           github_ref_after: ${{ github.event.after }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           github_user: ${{ github.actor }}
-          force_build: false
+          force_build: true

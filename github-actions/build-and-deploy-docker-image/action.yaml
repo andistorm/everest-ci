@@ -117,10 +117,3 @@ runs:
         else
           echo "-> Build and push skipped" >> $GITHUB_STEP_SUMMARY
         fi
-        echo "### Status" >> $GITHUB_STEP_SUMMARY
-        if [ ${{ success() }} == 'true' ]; then
-          echo "Success!" >> $GITHUB_STEP_SUMMARY
-        else
-          echo "Failed, something went wrong" >> $GITHUB_STEP_SUMMARY
-        fi
-

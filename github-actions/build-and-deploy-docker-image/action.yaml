@@ -93,3 +93,26 @@ runs:
         platforms: linux/amd64,linux/arm64,linux/arm/v7
         cache-from: type=gha
         cache-to: type=gha,mode=max
+    - name: Add summary
+      shell: bash
+      run: |
+        echo "# Build and deploy docker image (${{ inputs.image_name }})" >> $GITHUB_STEP_SUMMARY
+        echo "## Inputs" >> $GITHUB_STEP_SUMMARY
+        echo "* repository: ${{ inputs.repository }}" >> $GITHUB_STEP_SUMMARY
+        echo "* directory: ${{ inputs.directory }}" >> $GITHUB_STEP_SUMMARY
+        echo "* image_name: ${{ inputs.image_name }}" >> $GITHUB_STEP_SUMMARY
+        echo "* docker_registry: ${{ inputs.docker_registry }}" >> $GITHUB_STEP_SUMMARY
+        echo "* github_ref_before: ${{ inputs.github_ref_before }}" >> $GITHUB_STEP_SUMMARY
+        echo "* github_ref_after: ${{ inputs.github_ref_after }}" >> $GITHUB_STEP_SUMMARY
+        echo "* github_token: ${{ inputs.github_token }}" >> $GITHUB_STEP_SUMMARY
+        echo "* github_user: ${{ inputs.github_user }}" >> $GITHUB_STEP_SUMMARY
+        echo "## Changed files" >> $GITHUB_STEP_SUMMARY
+        echo "* ${{ steps.check-for-changes.outputs.is_changed }}" >> $GITHUB_STEP_SUMMARY
+        if [ ${{ steps.check-for-changes.outputs.is_changed }} == 'true' ]; then
+          echo "## Metadata" >> $GITHUB_STEP_SUMMARY
+          echo "* tags: ${{ steps.meta.outputs.tags }}" >> $GITHUB_STEP_SUMMARY
+          echo "* labels: ${{ steps.meta.outputs.labels }}" >> $GITHUB_STEP_SUMMARY
+          echo "## Url" >> $GITHUB_STEP_SUMMARY
+          echo "* https://${{ inputs.docker_registry }}/${{ inputs.image_name }}" >> $GITHUB_STEP_SUMMARY
+        fi
+

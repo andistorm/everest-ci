@@ -1,5 +1,9 @@
 # syntax=docker/dockerfile:1
-FROM python:3.11.4-alpine3.18
+FROM python:3.11.7-slim-bookworm as build
+
+RUN apt update && apt upgrade -y
+RUN apt update && apt install -y \
+    wget
 
 ARG CLANG_FORMAT_RELEASE_TAG=llvmorg-15.0.6
 ARG TARGETPLATFORM
@@ -19,11 +23,11 @@ RUN echo "Building for $TARGETPLATFORM" && \
     echo "url: ${clang_format_url}" && \
     wget -O /usr/bin/clang-format ${clang_format_url} && \
     chmod a+x /usr/bin/clang-format
-
 COPY ./run-clang-format.py /usr/bin/run-clang-format.py
+ENTRYPOINT ["/usr/bin/run-clang-format.py"]
 
-RUN /usr/bin/clang-format --version
-RUN clang-format --version
-
-
+FROM python:3.11.7-slim-bookworm as slim
+RUN apt update && apt upgrade -y
+COPY --from=build /usr/bin/clang-format /usr/bin/clang-format
+COPY --from=build /usr/bin/run-clang-format.py /usr/bin/run-clang-format.py
 ENTRYPOINT ["/usr/bin/run-clang-format.py"]

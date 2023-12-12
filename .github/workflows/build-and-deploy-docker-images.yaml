@@ -4,10 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       force_build:
-        description: 'Force build even if the image already exists'
+        description: 'Force build even if no changes are detected'
         required: false
         type: boolean
-        default: false
   push:
     branches:
       - '**'
@@ -23,17 +22,23 @@ jobs:
     strategy:
       matrix:
         include: 
-          - image_name: andistorm/everest-clang-format
+          - image_name: everest/everest-clang-format
             directory: docker/images/everest-clang-format
+          - image_name: everest/build-kit-alpine
+            directory: docker/images/build-kit
+            file: alpine.Dockerfile
+          - image_name: everest/build-kit-debian
+            directory: docker/images/build-kit
+            file: debian.Dockerfile
     runs-on: ubuntu-22.04
     steps:
       - name: Build and Deploy Docker Image
-        # LTODO andistorm -> everest
-        uses: andistorm/everest-ci/github-actions/build-and-deploy-docker-image@andistorm-clang-format
+        uses: everest/everest-ci/github-actions/build-and-deploy-docker-image@v1.1.0
         with:
-          repository: andistorm/everest-ci
+          repository: everest/everest-ci
           directory: ${{ matrix.directory }}
           image_name: ${{ matrix.image_name }}
+          dockerfile: ${{ matrix.file || 'Dockerfile' }}
           docker_registry: ${{ env.CONTAINER_REGISTRY }}
           github_ref_before: ${{ github.event.before }}
           github_ref_after: ${{ github.event.after }}

@@ -19,7 +19,7 @@ RUN echo "Building for $TARGETPLATFORM" && \
         exit 1; \
     fi && \
     version=$(echo ${CLANG_FORMAT_RELEASE_TAG} | cut -d'-' -f2) && \
-    clang_format_url=https://github.com/andistorm/everest-ci/releases/download/${CLANG_FORMAT_RELEASE_TAG}/clang-format-clang+llvm-${version}-${suffix} && \
+    clang_format_url=https://github.com/everest/everest-ci/releases/download/${CLANG_FORMAT_RELEASE_TAG}/clang-format-clang+llvm-${version}-${suffix} && \
     echo "url: ${clang_format_url}" && \
     wget -O /usr/bin/clang-format ${clang_format_url} && \
     chmod a+x /usr/bin/clang-format

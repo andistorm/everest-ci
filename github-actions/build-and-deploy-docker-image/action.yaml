@@ -9,6 +9,11 @@ inputs:
     description: 'Directory that contains the Dockerfile to build'
     required: true
     type: string
+  dockerfile:
+    description: 'Dockerfile to build'
+    required: true
+    default: 'Dockerfile'
+    type: string
   image_name:
     description: '<org>/<image-name> Name of the image to deploy'
     required: true
@@ -103,6 +108,7 @@ runs:
       uses: docker/build-push-action@v5.1.0
       with:
         context: dockerfile-repo/${{ inputs.directory }}
+        file: dockerfile-repo/${{ inputs.directory }}/${{ inputs.dockerfile }}
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}

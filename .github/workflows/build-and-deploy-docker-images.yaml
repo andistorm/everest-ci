@@ -18,7 +18,7 @@ jobs:
       matrix:
         include: 
           - image_name: andistorm/everest-clang-format
-            directory: docker/everest-clang-format
+            directory: docker/images/everest-clang-format
     runs-on: ubuntu-22.04
     steps:
       - name: Build and Deploy Docker Image

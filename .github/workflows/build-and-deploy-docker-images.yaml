@@ -43,7 +43,7 @@ jobs:
           ref: ${{ env.CUSTOM_BUILD_ACTION_VERSION }}
           path: .github/actions/build-and-deploy-docker-image
       - name: Build and Deploy Docker Image
-        uses: ./.github/actions/build_and_deploy_docker_image/github-actions/build-and-deploy-docker-image
+        uses: ./.github/actions/build-and-deploy-docker-image/github-actions/build-and-deploy-docker-image
         with:
           repository: ${{ github.repository }}
           directory: ${{ matrix.directory }}

@@ -2,6 +2,12 @@ name: Build and push docker images hosted on everest-ci
 
 on:
   workflow_dispatch:
+    inputs:
+      force_build:
+        description: 'Force build even if the image already exists'
+        required: false
+        type: boolean
+        default: false
   push:
     branches:
       - '**'
@@ -33,4 +39,4 @@ jobs:
           github_ref_after: ${{ github.event.after }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           github_user: ${{ github.actor }}
-          force_build: true
+          force_build: ${{ inputs.force_build || false }}

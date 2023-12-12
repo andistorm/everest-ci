@@ -1,12 +1,23 @@
 # syntax=docker/dockerfile:1
 FROM python:3.11.4-alpine3.18
 
-ARG RUN_CLANG_FORMAT_URL=https://raw.githubusercontent.com/Sarcasm/run-clang-format/39081c9c42768ab5e8321127a7494ad1647c6a2f/run-clang-format.py
-RUN wget -O /usr/bin/run-clang-format.py "$RUN_CLANG_FORMAT_URL" && \
-    chmod a+x /usr/bin/run-clang-format.py
-
-ARG STATIC_CLANG_FORMAT_URL=https://github.com/muttleyxd/clang-tools-static-binaries/releases/download/master-8f72ab3c/clang-format-17_linux-amd64
-RUN wget -O  /usr/bin/clang-format "$STATIC_CLANG_FORMAT_URL" && \
+ARG CLANG_FORMAT_RELEASE_TAG=llvmorg-15.0.6
+ARG TARGETPLATFORM
+RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
+        suffix=x86_64-linux-gnu-ubuntu-18.04; \
+    elif [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
+        suffix=aarch64-linux-gnu; \
+    elif [ "$TARGETPLATFORM" = "linux/arm/v7" ]; then \
+        suffix=armv7a-linux-gnueabihf; \
+    else \
+        echo "Unsupported platform: $TARGETPLATFORM"; \
+        exit 1; \
+    fi \
+    version=$(echo ${CLANG_FORMAT_RELEASE_TAG} | cut -d'-' -f2) \
+    clang_format_url=https://github.com/andistorm/everest-ci/releases/download/${CLANG_FORMAT_RELEASE_TAG}/clang-format-clang+llvm-${version}-${suffix} \
+    wget -O /usr/bin/clang-format ${clang_format_url} && \
     chmod a+x /usr/bin/clang-format
+
+COPY ./run-clang-format /usr/bin/run-clang-format
 
 ENTRYPOINT ["/usr/bin/run-clang-format.py"]

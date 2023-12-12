@@ -12,9 +12,9 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
     else \
         echo "Unsupported platform: $TARGETPLATFORM"; \
         exit 1; \
-    fi \
-    version=$(echo ${CLANG_FORMAT_RELEASE_TAG} | cut -d'-' -f2) \
-    clang_format_url=https://github.com/andistorm/everest-ci/releases/download/${CLANG_FORMAT_RELEASE_TAG}/clang-format-clang+llvm-${version}-${suffix} \
+    fi && \
+    version=$(echo ${CLANG_FORMAT_RELEASE_TAG} | cut -d'-' -f2) && \
+    clang_format_url=https://github.com/andistorm/everest-ci/releases/download/${CLANG_FORMAT_RELEASE_TAG}/clang-format-clang+llvm-${version}-${suffix} && \
     wget -O /usr/bin/clang-format ${clang_format_url} && \
     chmod a+x /usr/bin/clang-format
 

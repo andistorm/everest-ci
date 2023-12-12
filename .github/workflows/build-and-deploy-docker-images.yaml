@@ -16,7 +16,6 @@ on:
 env:
   CONTAINER_REGISTRY: ghcr.io
   CUSTOM_BUILD_ACTION_VERSION: ${{ github.sha }}
-  CUSTOM_BUILD_ACTION: ${{ github.repository }}/github-actions/build-and-deploy-docker-image
 
 jobs:
   build-and-push-all-images:
@@ -37,8 +36,14 @@ jobs:
             platforms: linux/amd64, linux/arm64, linux/arm/v7
     runs-on: ubuntu-22.04
     steps:
+      - name: Checkout build-and-deploy-docker-image action
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ github.repository }}
+          ref: ${{ env.CUSTOM_BUILD_ACTION_VERSION }}
+          path: actions/build_and_deploy_docker_image
       - name: Build and Deploy Docker Image
-        uses: ${CUSTOM_BUILD_ACTION}@${CUSTOM_BUILD_ACTION_VERSION}
+        uses: actions/build_and_deploy_docker_image/github-actions/build-and-deploy-docker-image
         with:
           repository: ${{ github.repository }}
           directory: ${{ matrix.directory }}

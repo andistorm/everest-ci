@@ -22,8 +22,7 @@ RUN echo "Building for $TARGETPLATFORM" && \
 
 COPY ./run-clang-format.py /usr/bin/run-clang-format.py
 
-RUN ls /usr/bin && \
-    ls -l /usr/bin/clang-format
+RUN /usr/bin/clang-format --version
 RUN clang-format --version
 
 

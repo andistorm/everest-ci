@@ -18,6 +18,6 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
     wget -O /usr/bin/clang-format ${clang_format_url} && \
     chmod a+x /usr/bin/clang-format
 
-COPY ./run-clang-format /usr/bin/run-clang-format
+COPY ./run-clang-format.py /usr/bin/run-clang-format.py
 
 ENTRYPOINT ["/usr/bin/run-clang-format.py"]

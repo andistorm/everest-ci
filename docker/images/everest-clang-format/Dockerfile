@@ -3,7 +3,8 @@ FROM python:3.11.4-alpine3.18
 
 ARG CLANG_FORMAT_RELEASE_TAG=llvmorg-15.0.6
 ARG TARGETPLATFORM
-RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
+RUN echo "Building for $TARGETPLATFORM" && \
+    if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
         suffix=x86_64-linux-gnu-ubuntu-18.04; \
     elif [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
         suffix=aarch64-linux-gnu; \
@@ -15,6 +16,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
     fi && \
     version=$(echo ${CLANG_FORMAT_RELEASE_TAG} | cut -d'-' -f2) && \
     clang_format_url=https://github.com/andistorm/everest-ci/releases/download/${CLANG_FORMAT_RELEASE_TAG}/clang-format-clang+llvm-${version}-${suffix} && \
+    echo "url: ${clang_format_url}" && \
     wget -O /usr/bin/clang-format ${clang_format_url} && \
     chmod a+x /usr/bin/clang-format
 

@@ -42,5 +42,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # LTODO switch to everest-ci once it supports creating releases
-          gh release -R andistorm/everest-ci create ${{ inputs.release-tag }} assets/* --title "${{ inputs.release-title }}" --notes "See [LLVM release notes](${{ steps.get-release-info.outputs.url }})."
+          gh release -R everest/everest-ci create ${{ inputs.release-tag }} assets/* --title "${{ inputs.release-title }}" --notes "See [LLVM release notes](${{ steps.get-release-info.outputs.url }})."

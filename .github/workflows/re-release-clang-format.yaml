@@ -42,4 +42,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release -R everest/everest-ci create ${{ inputs.release-tag }} assets/* --title "${{ inputs.release-title }}" --notes "See [LLVM release notes](${{ steps.get-release-info.outputs.url }})."
+          gh release -R ${{ github.repository }} create ${{ inputs.release-tag }} assets/* --title "${{ inputs.release-title }}" --notes "See [LLVM release notes](${{ steps.get-release-info.outputs.url }})."

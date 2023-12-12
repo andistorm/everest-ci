@@ -15,6 +15,7 @@ on:
 
 env:
   CONTAINER_REGISTRY: ghcr.io
+  CUSTOM_BUILD_ACTION_VERSION: andistorm-clang-format
 
 jobs:
   build-and-push-all-images:
@@ -22,20 +23,23 @@ jobs:
     strategy:
       matrix:
         include: 
-          - image_name: everest/everest-clang-format
+          - image_name: ${{ github.repository_owner }}/everest-clang-format
             directory: docker/images/everest-clang-format
-          - image_name: everest/build-kit-alpine
+            platforms: linux/amd64, linux/arm64, linux/arm/v7
+          - image_name: ${{ github.repository_owner }}/build-kit-alpine
             directory: docker/images/build-kit
             file: alpine.Dockerfile
-          - image_name: everest/build-kit-debian
+            platforms: linux/amd64, linux/arm64, linux/arm/v7
+          - image_name: ${{ github.repository_owner }}/build-kit-debian
             directory: docker/images/build-kit
             file: debian.Dockerfile
+            platforms: linux/amd64, linux/arm64, linux/arm/v7
     runs-on: ubuntu-22.04
     steps:
       - name: Build and Deploy Docker Image
-        uses: everest/everest-ci/github-actions/build-and-deploy-docker-image@v1.1.0
+        uses: ${{ github.repository }}/github-actions/build-and-deploy-docker-image@${{ env.CUSTOM_BUILD_ACTION_VERSION }}
         with:
-          repository: everest/everest-ci
+          repository: ${{ github.repository }}
           directory: ${{ matrix.directory }}
           image_name: ${{ matrix.image_name }}
           dockerfile: ${{ matrix.file || 'Dockerfile' }}
@@ -45,3 +49,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           github_user: ${{ github.actor }}
           force_build: ${{ inputs.force_build || false }}
+          platforms: ${{ matrix.platforms }}

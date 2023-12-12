@@ -44,6 +44,11 @@ inputs:
     required: false
     default: false
     type: boolean
+  platforms:
+    description: 'Platforms to build for'
+    required: true
+    default: 'linux/amd64,linux/arm64,linux/arm/v7'
+    type: string
 runs:
   using: "composite"
   steps:
@@ -92,7 +97,7 @@ runs:
       uses: docker/setup-qemu-action@v3.0.0
       with:
         image: tonistiigi/binfmt:latest
-        platforms: all
+        platforms: ${{ inputs.platforms }}
     - name: Set up Docker Buildx
       if: steps.check-do-build.outputs.do_build == 'true'
       uses: docker/setup-buildx-action@v2
@@ -112,7 +117,7 @@ runs:
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
-        platforms: linux/amd64,linux/arm64,linux/arm/v7
+        platforms: ${{ inputs.platforms }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
     - name: Add summary

@@ -15,7 +15,7 @@ on:
 
 env:
   CONTAINER_REGISTRY: ghcr.io
-  CUSTOM_BUILD_ACTION_VERSION: andistorm-clang-format
+  CUSTOM_BUILD_ACTION_VERSION: ${{ github.sha }}
 
 jobs:
   build-and-push-all-images:

@@ -68,12 +68,12 @@ runs:
       id: check-do-build
       shell: bash
       run: |
-        do_build = 'false'
+        do_build='false'
         if [ ${{ inputs.force_build }} == 'true' ]; then
-          do_build = 'true'
+          do_build='true'
         fi
         if [ ${{ steps.check-for-changes.outputs.is_changed }} == 'true' ]; then
-          do_build = 'true'
+          do_build='true'
         fi
         echo "do_build=$do_build" >> $GITHUB_OUTPUT
     - name: Extract metadata

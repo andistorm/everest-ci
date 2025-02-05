@@ -39,13 +39,6 @@
         "(^|/|\\.)Dockerfile$",
         "(^|/)Dockerfile\\.[^/]*$"
       ]
-      // ],
-      // "matchDatasources":[
-      //   "repology"
-      // ],
-      // "matchDepNames":[
-      //   "^debian_12/.*$"
-      // ]
     }
   ]
 }

@@ -59,7 +59,7 @@
       "description": "Group all deps in workflow files",
       "groupName": "workflow",
       "matchManagers": [
-        "/^github-actions$/"
+        "github-actions"
       ]
     }
   ]

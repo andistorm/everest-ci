@@ -43,7 +43,9 @@
       ],
       "matchDatasources": [
         "/^repology$/"
-      ]
+      ],
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true
     },
     {
       "description": "Group all pypi dependencies in Dockerfiles",
@@ -53,14 +55,18 @@
       ],
       "matchDatasources": [
         "/^pypi$/"
-      ]
+      ],
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true
     },
     {
       "description": "Group all deps in workflow files",
       "groupName": "github actions",
       "matchManagers": [
         "github-actions"
-      ]
+      ],
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true
     }
   ]
 }

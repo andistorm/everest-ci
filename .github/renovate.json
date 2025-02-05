@@ -35,10 +35,6 @@
     {
       "description": "Group all debian_12 dependencies in Dockerfiles",
       "groupName": "docker_debian_12",
-      "matchFileNames": [
-        "(^|/)[^.]+\\.Dockerfile$",
-        "(^|/)[^.]+\\.Dockerfile\\.[^/]*$"
-      ],
       "matchDepNames":[
         "debian_12/.*"
       ]

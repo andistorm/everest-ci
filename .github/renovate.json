@@ -43,25 +43,7 @@
         "repology"
       ],
       "matchDepNames":[
-        "debian_12/.*"
-      ]
-    },
-    {
-      "description": "Group all pypi dependencies in Dockerfiles",
-      "groupName": "docker_pypi",
-      "matchFileNames": [
-        "(^|/|\\.)Dockerfile$",
-        "(^|/)Dockerfile\\.[^/]*$"
-      ],
-      "matchDatasources": [
-        "pypi"
-      ]
-    },
-    {
-      "description": "Group all deps in workflow files",
-      "groupName": "workflow",
-      "matchManagers": [
-        "github-actions"
+        "^debian_12/.*$"
       ]
     }
   ]

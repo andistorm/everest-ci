@@ -36,7 +36,7 @@
       "description": "Group all debian_12 dependencies in Dockerfiles",
       "groupName": "docker debian 12",
       "matchPackageNames": [
-        "debian_12**"
+        "/^debian_12/"
       ]
     }
   ]

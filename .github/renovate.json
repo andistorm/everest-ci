@@ -19,7 +19,8 @@
       "description": "Custom manager for dependencies in Dockerfiles",
       "customType": "regex",
       "fileMatch": [
-        "/(^|\\/)[^/]*Dockerfile(\\.[^/]*)?$/"
+        "(^|/|\\.)Dockerfile$",
+        "(^|/)Dockerfile\\.[^/]*$"
       ],
       "matchStrings": [
         "\\s*renovate:\\s*datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\sENV .*?_VERSION=\\\"?(?<currentValue>.*)\\\"?\\s"

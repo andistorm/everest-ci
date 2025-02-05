@@ -37,6 +37,9 @@
       "groupName": "docker debian 12",
       "matchPackageNames": [
         "/^debian_12/"
+      ],
+      "matchFileNames": [
+        "/(^|\\/)[^/]*Dockerfile(\\.[^/]*)?$/"
       ]
     }
   ]

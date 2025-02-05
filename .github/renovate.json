@@ -40,6 +40,9 @@
       ],
       "matchFileNames": [
         "/(^|\\/)[^/]*Dockerfile(\\.[^/]*)?$/"
+      ],
+      "matchDatasources": [
+        "/^repology$/"
       ]
     }
   ]

@@ -36,12 +36,12 @@
       "description": "Group all debian_12 dependencies in Dockerfiles",
       "groupName": "docker_debian_12",
       "matchManagers": [
-        "regex"
+        "custom.regex"
       ],
       "matchDatasources": [
         "repology"
       ],
-      "matchDepNames":[
+      "matchDepNames": [
         "^debian_12/.*$"
       ]
     }

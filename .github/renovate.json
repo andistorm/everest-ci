@@ -34,7 +34,7 @@
   "packageRules": [
     {
       "description": "Group all debian_12 dependencies in Dockerfiles",
-      "groupName": "docker debian 12",
+      "groupName": "debian 12 packages in docker files",
       "matchPackageNames": [
         "/^debian_12/"
       ],
@@ -43,6 +43,23 @@
       ],
       "matchDatasources": [
         "/^repology$/"
+      ]
+    },
+    {
+      "description": "Group all pypi dependencies in Dockerfiles",
+      "groupName": "python packages in docker files",
+      "matchFileNames": [
+        "/(^|\\/)[^/]*Dockerfile(\\.[^/]*)?$/"
+      ],
+      "matchDatasources": [
+        "/^pypi$/"
+      ]
+    },
+    {
+      "description": "Group all deps in workflow files",
+      "groupName": "workflow",
+      "matchManagers": [
+        "/^github-actions$/"
       ]
     }
   ]

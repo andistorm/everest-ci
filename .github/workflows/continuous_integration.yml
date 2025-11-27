@@ -288,7 +288,7 @@ jobs:
           fetch-depth: 0
       - name: Docker Meta
         id: meta
-        uses: docker/metadata-action@v4.1.1
+        uses: docker/metadata-action@v5.10.0
         with:
           images: ${{ env.BUILD_KIT_IMAGE_NAME }}
           sep-tags: ","
